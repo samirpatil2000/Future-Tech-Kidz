@@ -131,3 +131,4 @@ collectstatic
 env
 account/migrations
 /db.sqlite3
+**/migrations
