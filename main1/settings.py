@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     # Apps
     'account',
+    'course',
 ]
 
 AUTH_USER_MODEL = 'account.Account' #appName.modelName
