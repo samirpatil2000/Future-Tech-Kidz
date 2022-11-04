@@ -1,0 +1,128 @@
+{% extends 'account/base.html' %}
+{% load static %}
+{% block style %}
+      <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+
+   <!-- font awesome cdn link  -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+      <link rel="stylesheet" href="{% static 'course/css/style.css' %}">
+{% endblock %}
+
+{% block body %}
+{% include 'course/a_navbar.html' %}
+
+
+
+<!-- header section ends -->
+
+<!-- home section starts  -->
+
+<section class="home" id="home">
+
+   <div class="row">
+
+      <div class="content">
+         <h3>online <span>education</span></h3>
+        <!-- <a href="#contact" class="btn">contact us</a>-->
+      </div>
+
+      <div class="image">
+         <img src="{% static 'course/images/homg-img.svg' %}" alt="">
+      </div>
+
+   </div>
+
+</section>
+
+<!-- home section ends -->
+
+<!-- couter section stars  -->
+
+<section class="count">
+
+   <div class="box-container">
+
+      <div class="box">
+         <i class="fas fa-graduation-cap"></i>
+         <div class="content">
+            <h3>10+</h3>
+            <p>courses</p>
+         </div>
+      </div>
+
+      <div class="box">
+         <i class="fas fa-user-graduate"></i>
+         <div class="content">
+            <h3>500+</h3>
+            <p>students</p>
+         </div>
+      </div>
+
+      <div class="box">
+         <i class="fas fa-chalkboard-user"></i>
+         <div class="content">
+            <h3>20+</h3>
+            <p>teachers</p>
+         </div>
+      </div>
+
+      <div class="box">
+         <i class="fas fa-face-smile"></i>
+         <div class="content">
+            <h3>100%</h3>
+            <p>satisfaction</p>
+         </div>
+      </div>
+
+   </div>
+
+</section>
+
+{% if not request.user.is_authenticated %}
+   <section class="login" id="login">
+
+      <h1 class="heading"><span>Login As</span></h1>
+
+      <div class="swiper course-slider">
+
+            <div class="swiper-wrapper">
+
+               <div class="swiper-slide slide">
+                  <img src="{% static 'course/images/user-green-check-mark-sign-white-background-3d-render-concept-website-app-icon_492780-1972.webp' %}" alt="">
+                  <h3>Admin</h3>
+                  <button type="button" class="login_btn"><h4>Login</h4></button>
+               </div>
+
+               <div class="swiper-slide slide">
+                  <img src="{% static 'course/images/user-green-check-mark-sign-white-background-3d-render-concept-website-app-icon_492780-1972.webp' %}" alt="">
+                  <h3>Branch Admin</h3>
+                  <button type="button" class="login_btn"><h4>Login</h4></button>
+               </div>
+
+               <div class="swiper-slide slide">
+                  <img src="{% static 'course/images/user-green-check-mark-sign-white-background-3d-render-concept-website-app-icon_492780-1972.webp' %}" alt="">
+                  <h3>Student</h3>
+                  <button type="button" class="login_btn"><h4>Login</h4></button>
+               </div>
+
+            </div>
+            <div class="swiper-pagination"></div>
+
+   </div>
+
+</section>
+{% endif %}
+
+
+
+<!-- footer section ends -->
+
+<!-- swiper js link  -->
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
+<!-- custom js file link  -->
+<script src="{% static 'course/js/script.js' %}"></script>
+
+
+{% endblock %}
