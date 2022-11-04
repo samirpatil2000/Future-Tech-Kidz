@@ -7,10 +7,10 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
       <link rel="stylesheet" href="{% static 'course/css/style.css' %}">
-
 {% endblock %}
 
 {% block body %}
+{% include 'course/a_navbar.html' %}
 
 
 
@@ -28,7 +28,7 @@
       </div>
 
       <div class="image">
-         <img src="images/homg-img.svg" alt="">
+         <img src="{% static 'course/images/homg-img.svg' %}" alt="">
       </div>
 
    </div>
@@ -79,39 +79,40 @@
 
 </section>
 
-<section class="login" id="login">
+{% if not request.user.is_authenticated %}
+   <section class="login" id="login">
 
-   <h1 class="heading"><span>Login As</span></h1>
+      <h1 class="heading"><span>Login As</span></h1>
 
-   <div class="swiper course-slider">
+      <div class="swiper course-slider">
 
-      <div class="swiper-wrapper">
+            <div class="swiper-wrapper">
 
-         <div class="swiper-slide slide">
-            <img src="images/user-green-check-mark-sign-white-background-3d-render-concept-website-app-icon_492780-1972.webp" alt="">
-            <h3>Admin</h3>
-            <button type="button" class="login_btn"><h4>Login</h4></button>
-         </div>
+               <div class="swiper-slide slide">
+                  <img src="{% static 'course/images/user-green-check-mark-sign-white-background-3d-render-concept-website-app-icon_492780-1972.webp' %}" alt="">
+                  <h3>Admin</h3>
+                  <button type="button" class="login_btn"><h4>Login</h4></button>
+               </div>
 
-         <div class="swiper-slide slide">
-            <img src="images/user-green-check-mark-sign-white-background-3d-render-concept-website-app-icon_492780-1972.webp" alt="">
-            <h3>Branch Admin</h3>
-            <button type="button" class="login_btn"><h4>Login</h4></button>
-         </div>
+               <div class="swiper-slide slide">
+                  <img src="{% static 'course/images/user-green-check-mark-sign-white-background-3d-render-concept-website-app-icon_492780-1972.webp' %}" alt="">
+                  <h3>Branch Admin</h3>
+                  <button type="button" class="login_btn"><h4>Login</h4></button>
+               </div>
 
-         <div class="swiper-slide slide">
-            <img src="images/user-green-check-mark-sign-white-background-3d-render-concept-website-app-icon_492780-1972.webp" alt="">
-            <h3>Student</h3>
-            <button type="button" class="login_btn"><h4>Login</h4></button>
-         </div>
+               <div class="swiper-slide slide">
+                  <img src="{% static 'course/images/user-green-check-mark-sign-white-background-3d-render-concept-website-app-icon_492780-1972.webp' %}" alt="">
+                  <h3>Student</h3>
+                  <button type="button" class="login_btn"><h4>Login</h4></button>
+               </div>
 
-      </div>
-
-      <div class="swiper-pagination"></div>
+            </div>
+            <div class="swiper-pagination"></div>
 
    </div>
 
 </section>
+{% endif %}
 
 
 
