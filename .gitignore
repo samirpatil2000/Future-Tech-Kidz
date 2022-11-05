@@ -129,6 +129,6 @@ dmypy.json
 
 collectstatic
 env
-account/migrations/**
 /db.sqlite3
 **/migrations/**
+!**/migrations/__init__.py
