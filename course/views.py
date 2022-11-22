@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from course.models import Enrollment
 
+
 # Create your views here.
 from account.models import Account, Student
 
@@ -34,3 +35,4 @@ def add_student(request):
 
     }
     return render(request, template_name='course', context=context)
+
