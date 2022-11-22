@@ -16,3 +16,6 @@ class Student(Account):
 
     def enroll_course(self):
         return Enrollment.objects.filter(student_id=self.id).values('course_id')
+
+    def __str__(self):
+        return self.full_name

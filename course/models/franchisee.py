@@ -8,3 +8,5 @@ class Franchisee(models.Model):
     created_at = models.DateTimeField(verbose_name='date of creation', auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='last date of update', auto_now=True)
 
+    def __str__(self):
+        return self.name
