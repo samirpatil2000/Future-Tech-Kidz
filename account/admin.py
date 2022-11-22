@@ -23,4 +23,8 @@ class AccountAdmin(UserAdmin):
 
 
 admin.site.register(Account, AccountAdmin)
-admin.site.register(Student)
+# admin.site.register(Student)
+
+@admin.register(Student)
+class CustomStudent(admin.ModelAdmin):
+    list_display = ['full_name', 'date_joined', 'last_login', 'franchisee_name']
