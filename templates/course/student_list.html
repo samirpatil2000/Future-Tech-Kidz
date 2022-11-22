@@ -1,0 +1,32 @@
+{% extends 'account/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'course/css/table.css' %}">
+{% endblock %}
+
+{% block body %}
+   <table class="table">
+     <thead>
+     	<tr>
+     	 <th>Sr.No.</th>
+     	 <th>Name</th>
+     	 <th>Course</th>
+		 <th>Franchise</th>
+     	 <th>Fees Paid</th>
+     	 <th>Fees Pending</th>
+     	</tr>
+     </thead>
+     <tbody>
+     	  <tr>
+     	  	  <td data-label="S.No">1</td>
+     	  	  <td data-label="Name">Dinesh</td>
+     	  	  <td data-label="Course">Python</td>
+			  <td data-label="Franchise">Karvenagar</td>
+     	  	  <td data-label="Fees Paid">5000</td>
+     	  	  <td data-label="Fees Pending">1000</td>
+     	  </tr>
+     </tbody>
+   </table>
+
+{% endblock %}

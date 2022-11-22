@@ -9,4 +9,5 @@ class Course(models.Model):
     fees = models.IntegerField()
 
 
-
+    def __str__(self):
+        return self.title
