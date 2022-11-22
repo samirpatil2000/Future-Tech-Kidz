@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from course.models import Enrollment
 
 # Create your views here.
 from account.models import Account, Student
@@ -15,13 +15,6 @@ def index(request):
 
 def student_list(request):
     context = {
-        {
-            "name": "",
-            "course_enrolled": "",
-            "franchise": "",
-            "fees_paid": 4500,
-            "fees_pending": 1000
-        }
+        "enroll_students": Enrollment.objects.all()
     }
-    student_list = Student.objects.filter()
-    return render(request, template_name='course/student_list.html')
+    return render(request, template_name='course/student_list.html', context=context)

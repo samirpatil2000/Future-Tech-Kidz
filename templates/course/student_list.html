@@ -1,6 +1,7 @@
 {% extends 'account/base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load student_remaining_fees_tags %}
 {% block style %}
     <link rel="stylesheet" href="{% static 'course/css/table.css' %}">
 {% endblock %}
@@ -18,14 +19,16 @@
      	</tr>
      </thead>
      <tbody>
-     	  <tr>
-     	  	  <td data-label="S.No">1</td>
-     	  	  <td data-label="Name">Dinesh</td>
-     	  	  <td data-label="Course">Python</td>
-			  <td data-label="Franchise">Karvenagar</td>
-     	  	  <td data-label="Fees Paid">5000</td>
-     	  	  <td data-label="Fees Pending">1000</td>
-     	  </tr>
+        {% for enrollment_obj in enroll_students %}
+              <tr>
+                  <td data-label="S.No">{{ forloop.counter }}</td>
+                  <td data-label="Name">{{ enrollment_obj.student }}</td>
+                  <td data-label="Course">{{ enrollment_obj.course }}</td>
+                  <td data-label="Franchise">{{ enrollment_obj.student.franchisee_name }}</td>
+                  <td data-label="Fees Paid">{% total_paid_amount_per_course enrollment_obj.student_id enrollment_obj.course_id %}</td>
+                  <td data-label="Fees Pending">{% remaining_amount_per_course enrollment_obj.student_id enrollment_obj.course_id %}</td>
+              </tr>
+        {% endfor %}
      </tbody>
    </table>
 
