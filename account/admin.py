@@ -27,4 +27,5 @@ admin.site.register(Account, AccountAdmin)
 
 @admin.register(Student)
 class CustomStudent(admin.ModelAdmin):
-    list_display = ['full_name', 'date_joined', 'last_login', 'franchisee_name']
+    list_display = ['full_name', 'date_joined', 'last_login', 'franchisee_name', "total_paid_amount", "remaining_amount"]
+
