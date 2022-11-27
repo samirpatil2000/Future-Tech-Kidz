@@ -24,7 +24,8 @@ def registration_view(request):
     else: #GET request
         form = RegistrationForm()
         context['registration_form'] = form
-    return render(request, 'course/register.html', context)
+    # return render(request, 'course/register.html', context)
+    return render(request, 'account/register.html', context)
 
 def logout_view(request):
     logout(request)
@@ -55,6 +56,7 @@ def login_view(request):
 
     context['login_form'] = form
 
-    return render(request, "course/login.html", context)
+    # return render(request, "course/login.html", context)
+    return render(request, "account/login.html", context)
 
 
