@@ -8,9 +8,9 @@ from django.contrib.auth.admin import UserAdmin
 
 class AccountAdmin(UserAdmin):
 
-	list_display = ('email','username','date_joined', 'last_login', 'is_admin','is_staff')
+	list_display = ('full_name', 'email','username','date_joined', 'last_login', 'is_admin','is_staff')
 
-	search_fields = ('email','username',)
+	search_fields = ('email','username', 'first_name')
 
 	readonly_fields=('date_joined', 'last_login')  #the fields that can't be change
 

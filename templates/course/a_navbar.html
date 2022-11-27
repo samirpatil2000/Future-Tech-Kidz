@@ -3,10 +3,11 @@
 
    <section class="flex">
 
-      <a href="#home" class="logo">Future Tech Kidz</a>
+      <a href="{% url 'home' %}" class="logo">Future Tech Kidz</a>
 
       <nav class="navbar">
-         <a href="#home">home</a>
+         <a href="{% url 'home' %}">home</a>
+
          <a href="{% url 'student_list' %}">Enrolled Students</a>
         <!-- <a href="#about">about</a>-->
          {% if request.user.is_authenticated %}
