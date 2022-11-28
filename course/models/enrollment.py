@@ -9,3 +9,6 @@ class Enrollment(models.Model):
     def __str__(self):
         return str(self.student.first_name) + " | " + str(self.course.title)
 
+    def save(self, *args, **kwargs):
+        return super().save(*args, **kwargs)
+
