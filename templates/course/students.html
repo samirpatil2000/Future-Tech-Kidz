@@ -1,0 +1,46 @@
+{% extends 'account/new_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load student_remaining_fees_tags %}
+
+{% block body %}
+
+    {% if title %}
+        <h1>{{ title }}</h1>
+    {% else %}
+        <h3>Enrolled Student In Your Franchise</h3>
+    {% endif %}
+
+    <div class="input-group mb-6">
+      <input type="text" class="form-control" placeholder="Student's name"
+             aria-label="Student's name" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-primary" type="button">Search</button>
+      </div>
+    </div>
+    <table class="table table-hover" style="margin-top: 20px">
+      <thead>
+        <tr>
+             <th>Id</th>
+             <th>Name</th>
+             <th>School Name</th>
+             <th>Courses Enrolled</th>
+             <th>Enrollments</th>
+            <th>Enroll In Course</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+              <tr>
+                  <td data-label="S.No">{{ forloop.counter }}</td>
+                  <td data-label="Name">{{ student.full_name }}</td>
+                  <td data-label="School Name">{{ student.school_name }}</td>
+                  <td data-label="Courses Enrolled"></td>
+                  <td data-label="Enrollments"></td>
+                  <td data-label="Enroll In Course"><a class="btn btn-outline-info" href="#">enroll</a></td>
+              </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+{% endblock %}

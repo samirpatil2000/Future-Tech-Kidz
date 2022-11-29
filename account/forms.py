@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
-
-from account.models import Account
+from account.models import Account, Student
 from phonenumber_field.formfields import PhoneNumberField
 
 
@@ -12,6 +11,14 @@ class RegistrationForm(UserCreationForm):
     class Meta:
         model = Account
         fields = ('email', 'username' ,'password1', 'password2', )
+
+
+
+class CreateStudentForm(forms.ModelForm):
+
+    class Meta:
+        model = Student
+        fields = ('email', 'first_name', 'last_name', 'school_name')
 
 
 class AccountAuthenticationForm(forms.ModelForm):
