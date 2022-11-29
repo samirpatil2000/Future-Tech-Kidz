@@ -37,7 +37,7 @@
                   <td data-label="School Name">{{ student.school_name }}</td>
                   <td data-label="Courses Enrolled"></td>
                   <td data-label="Enrollments"></td>
-                  <td data-label="Enroll In Course"><a class="btn btn-outline-info" href="#">enroll</a></td>
+                  <td data-label="Enroll In Course"><a class="btn btn-outline-info" href="{% url 'enroll_student' student.id %}">enroll</a></td>
               </tr>
         {% endfor %}
       </tbody>

@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from account.forms import CreateStudentForm
+from course.forms import  EnrollStudentForm
 from course.models import Enrollment, Franchisee
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -36,7 +37,6 @@ def student_by_franchise(request, franchise_id):
 def student_by_course(request, course_id):
     return fetch_enrollments(request, course_id=course_id, title="Students By Course")
 
-
 @login_required
 def get_enrollments(request):
     if not request.user.is_staff and not request.user.is_superuser:
@@ -50,6 +50,9 @@ def get_enrollments(request):
     }
     return render(request, template_name='course/enrollments.html', context=context)
 
+
+
+
 @login_required
 def get_students(request):
     if not request.user.is_staff and not request.user.is_superuser:
@@ -61,7 +64,6 @@ def get_students(request):
     context = {
         'students': Student.objects.filter(franchisee_name_id=franchise[0].id)
     }
-    print(context)
     return render(request, template_name='course/students.html', context=context)
 
 
@@ -96,3 +98,31 @@ def add_student(request):
         'form': student_create_form
     }
     return render(request, template_name='course/student_create_form.html', context=context)
+
+
+@login_required
+def enroll_student(request, student_id):
+    if not request.user.is_staff and not request.user.is_superuser:
+        return redirect('home')
+    student = Student.objects.filter(id=student_id)
+    franchise = Franchisee.objects.filter(owner_id=request.user.id)
+    if not franchise.exists() or not student.exists():
+        messages.warning(request, "User does not exists")
+        return redirect('home')
+
+    form = EnrollStudentForm()
+    if request.method == "POST":
+        form = EnrollStudentForm(request.POST or None)
+        if form.is_valid():
+            enroll = form.save(commit=False)
+            enroll.student_id = student_id
+            enroll.save()
+            messages.success(request, "Student has Been Enrolled Successfully..!")
+            return redirect('students')
+
+    context = {
+        'form': form,
+        'student': student[0]
+    }
+
+    return render(request, template_name='course/enroll_student_form.html', context=context)
