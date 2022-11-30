@@ -17,9 +17,11 @@
                 <div class="">
                     <select name="course" class="select form-control" required="" id="id_course">
                         <option value="{{ student.id }}" selected="">{{ student.full_name }}</option>
+
                     </select>
                 </div>
             </div>
+
             {{ form | crispy  }}
         </fieldset>
         <div class="form-group">
