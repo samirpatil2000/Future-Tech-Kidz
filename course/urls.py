@@ -7,6 +7,7 @@ urlpatterns = [
     path('enrollments/', views.get_enrollments, name='enrollments'),
 
 
+
     path('students/franchisee/<int:franchise_id>/', views.student_by_franchise, name="student_by_franchise"),
     path('students/courses/<int:course_id>/', views.student_by_course, name="student_by_course"),
 
@@ -18,5 +19,3 @@ urlpatterns = [
 
     path('transactions/', views.transactions, name='transactions'),
     path('transactions/<int:enrollment_id>', views.add_transactions, name='add_transaction'),
-
-]

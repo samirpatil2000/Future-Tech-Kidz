@@ -18,5 +18,3 @@ class Enrollment(models.Model):
         return super().save(*args, **kwargs)
 
 
-
-
