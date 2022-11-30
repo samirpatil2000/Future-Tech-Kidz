@@ -21,10 +21,10 @@ class CustomCourse(admin.ModelAdmin):
 @admin.register(Transaction)
 class CustomTransaction(admin.ModelAdmin):
     list_display = [
-        "student","course", "paid_at", "reference","amount",
+        "enrollment", "paid_at", "reference","amount",
     ]
 
 @admin.register(Enrollment)
 class CustomEnrollment(admin.ModelAdmin):
-    list_display = ["student", "course", "enrolled_at"]
+    list_display = ["student", "course", "enrolled_at", "is_active"]
 

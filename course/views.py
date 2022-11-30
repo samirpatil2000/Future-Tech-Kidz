@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from account.forms import CreateStudentForm
-from course.forms import  EnrollStudentForm
+from course.forms import EnrollStudentForm, TransactionForm
 from course.models import Enrollment, Franchisee
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -51,8 +51,6 @@ def get_enrollments(request):
     return render(request, template_name='course/enrollments.html', context=context)
 
 
-
-
 @login_required
 def get_students(request):
     if not request.user.is_staff and not request.user.is_superuser:
@@ -93,6 +91,9 @@ def add_student(request):
             student.set_password("1234")
             student.save()
             return redirect('home')
+        # else:
+        #     messages.warning(request, "Something went wrong")
+        #     return redirect('home')
 
     context = {
         'form': student_create_form
@@ -111,14 +112,18 @@ def enroll_student(request, student_id):
         return redirect('home')
 
     form = EnrollStudentForm()
+    course = ""
     if request.method == "POST":
-        form = EnrollStudentForm(request.POST or None)
-        if form.is_valid():
-            enroll = form.save(commit=False)
-            enroll.student_id = student_id
-            enroll.save()
-            messages.success(request, "Student has Been Enrolled Successfully..!")
-            return redirect('students')
+        try:
+            form = EnrollStudentForm(request.POST or None)
+            if form.is_valid():
+                enroll = form.save(commit=False)
+                enroll.student_id = student_id
+                enroll.save()
+                messages.success(request, "Student has Been Enrolled Successfully..!")
+        except Exception as e:
+            messages.warning(request, "Can't create new enrollment for {}, cause, it already exists".format(student[0].full_name))
+        return redirect('students')
 
     context = {
         'form': form,
@@ -142,3 +147,36 @@ def delete_enrollment(request, id):
     enrollment.update(is_active=False)
     messages.success(request, "Enrollment Deleted Successfully")
     return redirect('enrollments')
+
+
+@login_required
+def add_transactions(request, enrollment_id):
+    if not request.user.is_staff and not request.user.is_superuser:
+        return redirect('home')
+    franchise = Franchisee.objects.filter(owner_id=request.user.id)
+    if not franchise.exists():
+        messages.warning(request, "User does not exists")
+        return redirect('home')
+
+    enrollment = Enrollment.objects.filter(id=enrollment_id)
+    if not enrollment.exists():
+        messages.warning(request, "Object does not exists..!")
+        return redirect('home')
+
+    form = TransactionForm()
+
+    if request.method == "POST":
+        form = TransactionForm(request.POST or None)
+        if form.is_valid():
+            transaction = form.save(commit=False)
+            transaction.enrollment_id = enrollment_id
+            transaction.created_by_id = request.user.id
+            transaction.save()
+            messages.success(request, "Transaction has Been Created Successfully..!")
+            return redirect('enrollments')
+
+    context = {
+        'form': form,
+        'enrollment': enrollment[0]
+    }
+    return render(request, 'course/add_transaction.html', context=context)

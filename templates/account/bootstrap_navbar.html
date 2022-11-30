@@ -18,6 +18,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="{% url 'students' %}">All Students</a>
                 <a class="dropdown-item" href="{% url 'add_student' %}">Add New Student</a>
+{#                <a class="dropdown-item" href="{% url 'add_transaction' %}">Add Transactions</a>#}
             </div>
         </li>
         {% if request.user.is_authenticated %}
