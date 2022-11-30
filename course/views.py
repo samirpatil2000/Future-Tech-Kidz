@@ -3,18 +3,14 @@ from django.shortcuts import render, redirect
 
 from account.forms import CreateStudentForm
 from course.forms import EnrollStudentForm, TransactionForm
-from course.models import Enrollment, Franchisee
+from course.models import Enrollment, Franchisee, Transaction
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from account.models import Account, Student
 
 
 def home(request):
-    return render(request, template_name='course/index.html')
-
-
-def index(request):
-    return render(request, template_name='course/table.html')
+    return render(request, template_name='course/new_index.html')
 
 
 def fetch_enrollments(request, **kwargs):
@@ -23,19 +19,18 @@ def fetch_enrollments(request, **kwargs):
         "title": title,
         "enroll_students": Enrollment.objects.filter(**kwargs)
     }
-    return render(request, template_name='course/student_list.html', context=context)
+    return render(request, template_name='course/students.html', context=context)
 
 
 def student_list(request):
     return fetch_enrollments(request)
 
-
 def student_by_franchise(request, franchise_id):
     return fetch_enrollments(request, student__franchisee_name_id=franchise_id, title="Students By Franchise")
 
-
 def student_by_course(request, course_id):
     return fetch_enrollments(request, course_id=course_id, title="Students By Course")
+
 
 @login_required
 def get_enrollments(request):
@@ -65,12 +60,8 @@ def get_students(request):
     return render(request, template_name='course/students.html', context=context)
 
 
-def student_details(request, id:int):
-    return
-
 def create_username(email: str):
     return email.split("@")[0]
-
 
 
 @login_required
@@ -148,6 +139,19 @@ def delete_enrollment(request, id):
     messages.success(request, "Enrollment Deleted Successfully")
     return redirect('enrollments')
 
+
+def transactions(request):
+    if not request.user.is_staff and not request.user.is_superuser:
+        return redirect('home')
+    franchise = Franchisee.objects.filter(owner_id=request.user.id)
+    if not franchise.exists():
+        messages.warning(request, "User does not exists")
+        return redirect('home')
+
+    context = {
+        "transactions": Transaction.objects.filter(enrollment__student__franchisee_name_id=franchise[0].id)
+    }
+    return render(request, 'course/transactions.html', context=context)
 
 @login_required
 def add_transactions(request, enrollment_id):
