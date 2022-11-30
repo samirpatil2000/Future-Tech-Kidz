@@ -13,8 +13,8 @@ class Enrollment(models.Model):
 
     def save(self, *args, **kwargs):
         enrollment = Enrollment.objects.filter(student_id=self.student_id, course_id=self.course_id, is_active=True)
-        if enrollment.exists():
+        print(enrollment, "enrollments")
+        if enrollment.exists() and enrollment[0].id != self.id:
             raise "Can't create new enrollment for {} cause, it already exists".format(self.student.full_name)
+
         return super().save(*args, **kwargs)
-
-

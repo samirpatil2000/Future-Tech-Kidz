@@ -11,9 +11,6 @@
       <li class="nav-item active">
         <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'enrollments' %}">Enrolled Students</a>
-      </li>
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -21,16 +18,25 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="{% url 'students' %}">All Students</a>
-                <a class="dropdown-item" href="{% url 'add_student' %}">Add New Student</a>
+                <a class="dropdown-item" href="{% url 'enrollments' %}">Enrolled Students</a>
                 <a class="dropdown-item" href="{% url 'transactions' %}">Transactions</a>
-
             </div>
         </li>
 
-
         {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  User
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                    <a class="dropdown-item" href="{% url 'password_change' %}">Password Change</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}">LogOut</a>
+                </div>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
               </li>
         {% endif %}
     </ul>

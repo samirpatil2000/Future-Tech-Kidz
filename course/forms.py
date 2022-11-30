@@ -12,6 +12,21 @@ class EnrollStudentForm(forms.ModelForm):
         fields = ('course',)
 
 
+class UpdateEnrollStudentForm(forms.ModelForm):
+
+    class Meta:
+        model = Enrollment
+        fields = ('course', 'url')
+
+    def save(self, commit=False):
+        obj = self.instance
+        obj.course = self.instance.course
+        obj.url = self.instance.url
+        if commit:
+            obj.save()
+        return obj
+
+
 class TransactionForm(forms.ModelForm):
 
     class Meta:

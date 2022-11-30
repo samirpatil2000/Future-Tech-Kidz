@@ -1,8 +1,14 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from account.forms import RegistrationForm, AccountAuthenticationForm#, AccountUpdateForm
 
 # Create your views here.
+from account.models import Account
+from course.models import Franchisee
+
+
 def index(request):
     return render(request,'account/home.html')
 
@@ -59,4 +65,14 @@ def login_view(request):
     # return render(request, "course/login.html", context)
     return render(request, "account/login.html", context)
 
-
+@login_required
+def profile(request):
+    franchisee = Franchisee.objects.filter(owner_id=request.user.id)
+    if not franchisee.exists():
+        messages.warning(request, "User Doesn't not have any franchisee")
+        return redirect('home')
+    context = {
+        "user": Account.objects.get(id=request.user.id),
+        "franchisee": franchisee[0]
+    }
+    return render(request, 'account/branch_profile.html', context=context)

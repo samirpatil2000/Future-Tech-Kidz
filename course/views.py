@@ -1,8 +1,8 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from account.forms import CreateStudentForm
-from course.forms import EnrollStudentForm, TransactionForm
+from course.forms import EnrollStudentForm, TransactionForm, UpdateEnrollStudentForm
 from course.models import Enrollment, Franchisee, Transaction
 
 from django.contrib.auth.decorators import login_required
@@ -117,9 +117,8 @@ def add_student(request):
     return render(request, template_name='course/student_create_form.html', context=context)
 
 
-
 @login_required
-def enroll_student(request, student_id):
+def add_enrollment(request, student_id):
     if not request.user.is_staff and not request.user.is_superuser:
         return redirect('home')
     student = Student.objects.filter(id=student_id)
@@ -129,7 +128,6 @@ def enroll_student(request, student_id):
         return redirect('home')
 
     form = EnrollStudentForm()
-    course = ""
     if request.method == "POST":
         try:
             form = EnrollStudentForm(request.POST or None)
@@ -141,31 +139,41 @@ def enroll_student(request, student_id):
         except Exception as e:
             messages.warning(request, "Can't create new enrollment for {}, cause, it already exists".format(student[0].full_name))
         return redirect('students')
-
-
-@login_required
-def enroll_student(request, student_id):
-    if not request.user.is_staff and not request.user.is_superuser:
-        return redirect('home')
-    student = Student.objects.filter(id=student_id)
-    franchise = Franchisee.objects.filter(owner_id=request.user.id)
-    if not franchise.exists() or not student.exists():
-        messages.warning(request, "User does not exists")
-        return redirect('home')
-
-    form = EnrollStudentForm()
-    if request.method == "POST":
-        form = EnrollStudentForm(request.POST or None)
-        if form.is_valid():
-            enroll = form.save(commit=False)
-            enroll.student_id = student_id
-            enroll.save()
-            messages.success(request, "Student has Been Enrolled Successfully..!")
-            return redirect('students')
-
     context = {
         'form': form,
         'student': student[0]
+    }
+    return render(request, template_name='course/enroll_student_form.html', context=context)
+
+
+@login_required
+def update_enrollment(request, enrollment_id):
+    if not request.user.is_staff and not request.user.is_superuser:
+        return redirect('home')
+
+    franchise = Franchisee.objects.filter(owner_id=request.user.id)
+    if not franchise.exists():
+        messages.warning(request, "User does not exists")
+        return redirect('home')
+
+    enrollment = get_object_or_404(Enrollment, pk=enrollment_id)
+
+    if request.method == "POST":
+        form = UpdateEnrollStudentForm(request.POST or None, instance=enrollment)
+        if form.is_valid():
+            object = form.save(commit=False)
+            object.save()
+            messages.success(request, "Successfully Updated..!")
+            return redirect('enrollments')
+
+    form = UpdateEnrollStudentForm(initial={
+        'course': enrollment.course,
+        'url': enrollment.url
+    })
+
+    context = {
+        'form': form,
+        'student': enrollment.student
     }
 
     return render(request, template_name='course/enroll_student_form.html', context=context)
