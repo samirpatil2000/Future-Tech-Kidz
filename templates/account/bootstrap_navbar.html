@@ -11,19 +11,20 @@
       <li class="nav-item active">
         <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Student
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="{% url 'students' %}">All Students</a>
-                <a class="dropdown-item" href="{% url 'enrollments' %}">Enrolled Students</a>
-                <a class="dropdown-item" href="{% url 'transactions' %}">Transactions</a>
-            </div>
-        </li>
-
         {% if request.user.is_authenticated %}
+            {% if request.user.is_staff %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Student
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'students' %}">All Students</a>
+                        <a class="dropdown-item" href="{% url 'enrollments' %}">Enrolled Students</a>
+                        <a class="dropdown-item" href="{% url 'transactions' %}">Transactions</a>
+                    </div>
+                </li>
+            {% endif %}
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   User
