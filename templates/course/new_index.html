@@ -13,9 +13,13 @@
           <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
         <p class="lead">
             {% if request.user.is_authenticated %}
+                {% if request.user.is_admin %}
+                    <a class="btn btn-primary btn-lg" href="/admin" role="button">Admin</a>
+                {% endif %}
                   <a class="btn btn-primary btn-lg" href="#" role="button">Courses</a>
             {% else %}
                 <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+{#                <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>#}
             {% endif %}
         </p>
     </div>
