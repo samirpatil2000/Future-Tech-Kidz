@@ -7,22 +7,6 @@ class Student(Account):
     school_name = models.CharField(max_length=30)
     franchisee_name = models.ForeignKey('course.Franchisee', on_delete=models.SET_NULL, blank=True, null=True)
 
-    def total_paid_amount_per_course(self, course_id):
-        return Transaction.objects.filter(student__id=self.id, course_id=course_id).aggregate(Sum("amount")).get("amount__sum", 0) or 0
-
-    def total_paid_amount(self):
-        courses = self.enroll_course()
-        return Transaction.objects.filter(student__id=self.id, course_id__in=courses).aggregate(Sum("amount")).get("amount__sum", 0) or 0
-
-    def remaining_amount(self):
-        courses = self.enroll_course()
-        total_fees = Course.objects.filter(id__in=courses).aggregate(Sum("fees")).get("fees__sum", 0) or 0
-        return total_fees - self.total_paid_amount()
-
-    def remaining_amount_per_course(self, course_id):
-        total_fees = Course.objects.get(course_id).Fees
-        return total_fees - self.total_paid_amount_per_course(course_id)
-
     def enroll_course(self):
         return Enrollment.objects.filter(student_id=self.id).values('course_id')
 
