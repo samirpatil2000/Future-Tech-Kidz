@@ -19,19 +19,20 @@
              <th>Course</th>
              <th>Fees Paid</th>
              <th>Fees Pending</th>
+             <th>Delete Enrollment</th>
         </tr>
       </thead>
       <tbody>
-        {% for enrollment_obj in enrollments %}
-              <tr>
-                  <td data-label="S.No">{{ forloop.counter }}</td>
-                  <td data-label="Name">{{ enrollment_obj.student }}</td>
-
-                  <td data-label="Course">{{ enrollment_obj.course }}</td>
-                  <td data-label="Fees Paid">{% total_paid_amount_per_course enrollment_obj.student_id enrollment_obj.course_id %}</td>
-                  <td data-label="Fees Pending">{% remaining_amount_per_course enrollment_obj.student_id enrollment_obj.course_id %}</td>
-              </tr>
-        {% endfor %}
+            {% for enrollment_obj in enrollments %}
+                <tr>
+                    <td data-label="S.No">{{ forloop.counter }}</td>
+                    <td data-label="Name">{{ enrollment_obj.student }}</td>
+                    <td data-label="Course">{{ enrollment_obj.course }}</td>
+                    <td data-label="Fees Paid">{% total_paid_amount_per_course enrollment_obj.student_id enrollment_obj.course_id %}</td>
+                    <td data-label="Fees Pending">{% remaining_amount_per_course enrollment_obj.student_id enrollment_obj.course_id %}</td>
+                    <td data-label="Delete Enrollment"><a class="btn btn-outline-danger" href="{%  url 'delete_enrollment' enrollment_obj.id %}">Delete</a></td>
+                </tr>
+            {% endfor %}
       </tbody>
     </table>
 

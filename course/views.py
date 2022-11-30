@@ -46,7 +46,7 @@ def get_enrollments(request):
         messages.warning(request, "User does not exists")
         return redirect('home')
     context = {
-        'enrollments': Enrollment.objects.filter(student__franchisee_name_id=franchise[0].id)
+        'enrollments': Enrollment.objects.filter(student__franchisee_name_id=franchise[0].id, is_active=True)
     }
     return render(request, template_name='course/enrollments.html', context=context)
 
@@ -126,3 +126,19 @@ def enroll_student(request, student_id):
     }
 
     return render(request, template_name='course/enroll_student_form.html', context=context)
+
+@login_required
+def delete_enrollment(request, id):
+    if not request.user.is_staff and not request.user.is_superuser:
+        return redirect('home')
+    franchise = Franchisee.objects.filter(owner_id=request.user.id)
+    if not franchise.exists():
+        messages.warning(request, "User does not exists")
+        return redirect('home')
+    enrollment = Enrollment.objects.filter(id=id)
+    if not enrollment.exists():
+        messages.warning(request, "Object does not exists..!")
+        return redirect('home')
+    enrollment.update(is_active=False)
+    messages.success(request, "Enrollment Deleted Successfully")
+    return redirect('enrollments')
