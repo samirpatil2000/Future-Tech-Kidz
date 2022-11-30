@@ -8,20 +8,19 @@
     <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="'border-bottom mb-4">Enroll Student</legend>
+            <legend class="'border-bottom mb-4">add transactions</legend>
 
             <div id="div_id_course" class="form-group">
                 <label for="id_course" class=" requiredField">
-                    Student <span class="asteriskField">*</span>
+                    Enrollment <span class="asteriskField">*</span>
                 </label>
                 <div class="">
                     <select name="course" class="select form-control" required="" id="id_course">
-                        <option value="{{ student.id }}" selected="">{{ student.full_name }}</option>
-
+                        <option value="{{ enrollment.id }}" selected="">{{ enrollment.student }} - {{ enrollment.course }}</option>
+{#                        <option value="2">Backend</option>#}
                     </select>
                 </div>
             </div>
-
             {{ form | crispy  }}
         </fieldset>
         <div class="form-group">

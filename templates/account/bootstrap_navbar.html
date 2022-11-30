@@ -1,5 +1,6 @@
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
+<nav class="navbar navbar-expand-lg navbar-light bg-info" style="background-color: #e3f2fd;">
+
 
   <a class="navbar-brand" href="{% url 'home' %}">Future Tech Kidz</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,7 +12,7 @@
         <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'student_list' %}">Enrolled Students</a>
+        <a class="nav-link" href="{% url 'enrollments' %}">Enrolled Students</a>
       </li>
 
         <li class="nav-item dropdown">
@@ -21,6 +22,8 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="{% url 'students' %}">All Students</a>
                 <a class="dropdown-item" href="{% url 'add_student' %}">Add New Student</a>
+                <a class="dropdown-item" href="{% url 'transactions' %}">Transactions</a>
+
             </div>
         </li>
 

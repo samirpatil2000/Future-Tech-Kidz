@@ -19,19 +19,46 @@
              <th>Course</th>
              <th>Fees Paid</th>
              <th>Fees Pending</th>
+
+             <th>Delete Enrollment</th>
+             <th>Fees Payment</th>
         </tr>
       </thead>
       <tbody>
-        {% for enrollment_obj in enrollments %}
-              <tr>
-                  <td data-label="S.No">{{ forloop.counter }}</td>
-                  <td data-label="Name">{{ enrollment_obj.student }}</td>
+            {% for enrollment_obj in enrollments %}
+                <tr>
+                    <td data-label="S.No">{{ forloop.counter }}</td>
+                    <td data-label="Name">{{ enrollment_obj.student }}</td>
+                    <td data-label="Course">{{ enrollment_obj.course }}</td>
+                    <td data-label="Fees Paid" id="paid_amount-{{ enrollment_obj.id }}">{% total_paid_amount_per_course enrollment_obj.id %}</td>
+                    <td data-label="Fees Pending" id="pending_amount-{{ enrollment_obj.id }}">{% remaining_amount_per_course enrollment_obj.id enrollment_obj.course_id %}</td>
+                    <td data-label="Delete Enrollment">
+                        <a class="btn btn-outline-danger" id="delete-button-{{ enrollment_obj.id }}"
+                           onclick="confirmDelete()"
+                           href="#">
+                            Delete</a>
+                        <script>
+                          function confirmDelete(){
+                                var result = window.confirm('Are you sure you want to delete this?');
+                                console.log(result)
+                                if (result === true) {
+                                    var url = "{%  url 'delete_enrollment' enrollment_obj.id %}"
+                                    window.open(url)
+                                }
+                          }
+                        </script>
 
-                  <td data-label="Course">{{ enrollment_obj.course }}</td>
-                  <td data-label="Fees Paid">{% total_paid_amount_per_course enrollment_obj.student_id enrollment_obj.course_id %}</td>
-                  <td data-label="Fees Pending">{% remaining_amount_per_course enrollment_obj.student_id enrollment_obj.course_id %}</td>
-              </tr>
-        {% endfor %}
+                    </td>
+                    <td data-label="Add Transaction" id="transaction-{{ enrollment_obj.id }}"><a class="btn btn-outline-info" href="{%  url 'add_transaction' enrollment_obj.id %}">Pay Fees</a></td>
+                </tr>
+                <script>
+                    var fees_pending = document.getElementById("pending_amount-{{ enrollment_obj.id }}").innerHTML;
+                    if (fees_pending === '0'){
+                        document.getElementById("transaction-{{ enrollment_obj.id }}").innerHTML = "Already Paid";
+                    }
+                </script>
+            {% endfor %}
+
       </tbody>
     </table>
 
