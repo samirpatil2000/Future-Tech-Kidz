@@ -34,6 +34,6 @@ admin.site.register(Account, AccountAdmin)
 @admin.register(Student)
 class CustomStudent(admin.ModelAdmin):
 	list_display = ('full_name', 'date_joined', 'last_login', 'franchisee_name')
-	exclude = ('is_admin', "is_franchisee_user", "is_staff", "is_superuser")
+	exclude = ('is_admin', "is_franchisee_user", "is_staff", "is_superuser", "password")
 
 
