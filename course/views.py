@@ -32,6 +32,14 @@ def student_by_franchise(request, franchise_id):
 def student_by_course(request, course_id):
     return fetch_enrollments(request, course_id=course_id, title="Students By Course")
 
+@login_required
+def enrolled_courses(request):
+    context = {
+        "enrollments": Enrollment.objects.filter(student_id=request.user.id)
+    }
+    print(Enrollment.objects.filter(student_id=request.user.id))
+    return render(request, template_name='course/enrollments_student.html', context=context)
+
 
 @login_required
 def get_enrollments(request):

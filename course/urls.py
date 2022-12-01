@@ -7,7 +7,7 @@ urlpatterns = [
     path('enrollments/', views.get_enrollments, name='enrollments'),
 
     path('students/franchisee/<int:franchise_id>/', views.student_by_franchise, name="student_by_franchise"),
-    path('students/courses/<int:course_id>/', views.student_by_course, name="student_by_course"),
+    path('students/enrollments/', views.enrolled_courses, name="enrolled_courses"),
 
     path('students/add/', views.add_student, name="add_student"),
     path('students/update/<int:student_id>', views.update_student, name="update_student"),
