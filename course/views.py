@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
-from account.forms import CreateStudentForm
+from account.forms import CreateStudentForm, EditStudentForm
 from course.forms import EnrollStudentForm, TransactionForm, UpdateEnrollStudentForm
 from course.models import Enrollment, Franchisee, Transaction
 
@@ -112,10 +112,42 @@ def add_student(request):
 
 
     context = {
+        'title': "Add New Student",
         'form': student_create_form
     }
     return render(request, template_name='course/student_create_form.html', context=context)
 
+@login_required
+def update_student(request, student_id):
+    if not request.user.is_staff and not request.user.is_superuser:
+        return redirect('home')
+    franchisee = Franchisee.objects.filter(owner_id=request.user.id)
+    if not franchisee.exists():
+        messages.warning(request, "User does not exists")
+        return redirect('home')
+    student_object = get_object_or_404(Student, id=student_id)
+    if student_object.franchisee_name_id != franchisee[0].id:
+        messages.warning(request, "Not Authorized to Student Details")
+        return redirect('home')
+    form = EditStudentForm()
+    if request.method == "POST":
+        form = EditStudentForm(request.POST or None, instance=student_object)
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.save()
+            return redirect('students')
+
+    form = EditStudentForm(initial={
+        "email":student_object.email,
+        "first_name":student_object.first_name,
+        "last_name":student_object.last_name,
+        "school_name":student_object.school_name,
+    })
+    context = {
+        'title': "Update Student Details",
+        'form': form
+    }
+    return render(request, template_name='course/student_create_form.html', context=context)
 
 @login_required
 def add_enrollment(request, student_id):
@@ -141,7 +173,7 @@ def add_enrollment(request, student_id):
         return redirect('students')
     context = {
         'form': form,
-        'student': student[0]
+        'student': student[0],
     }
     return render(request, template_name='course/enroll_student_form.html', context=context)
 
@@ -157,6 +189,9 @@ def update_enrollment(request, enrollment_id):
         return redirect('home')
 
     enrollment = get_object_or_404(Enrollment, pk=enrollment_id)
+    if enrollment.is_active == False:
+        messages.warning(request, "Enrollment has been deleted..!")
+        return redirect('enrollments')
 
     if request.method == "POST":
         form = UpdateEnrollStudentForm(request.POST or None, instance=enrollment)
@@ -173,7 +208,8 @@ def update_enrollment(request, enrollment_id):
 
     context = {
         'form': form,
-        'student': enrollment.student
+        'student': enrollment.student,
+        'enrollment_id':enrollment_id,
     }
 
     return render(request, template_name='course/enroll_student_form.html', context=context)

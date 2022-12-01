@@ -20,7 +20,7 @@
              <th>Fees Paid</th>
              <th>Fees Pending</th>
 
-             <th>Delete</th>
+             <th>Edit</th>
              <th>Fees Payment</th>
              <th>Url</th>
         </tr>
@@ -53,9 +53,15 @@
                     <td data-label="Edit Enrollment">
                         <a class="btn btn-outline-primary" href="{%  url 'update_enrollment' enrollment_obj.id %}">Edit</a>
                     </td>
-                    <td data-label="Add Transaction" id="transaction-{{ enrollment_obj.id }}"><a class="btn btn-outline-info" href="{%  url 'add_transaction' enrollment_obj.id %}">Pay Fees</a></td>
-                    <td data-label="url">{{ enrollment_obj.url }}</td>
-
+                    <td data-label="Add Transaction" id="transaction-{{ enrollment_obj.id }}">
+                        <a class="btn btn-outline-info" href="{%  url 'add_transaction' enrollment_obj.id %}">Pay Fees</a>
+                    </td>
+                    {% if enrollment_obj.url %}
+                        <td data-label="url">
+                            <a href="{{ enrollment_obj.url }}" target="_blank">Meet</a></td>
+                    {% else %}
+                        <td data-label="url">No meet</td>
+                    {% endif %}
                 </tr>
 
                 <script>
