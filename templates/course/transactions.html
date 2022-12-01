@@ -19,16 +19,20 @@
              <th>Amount</th>
              <th>Reference</th>
              <th>Added By</th>
+             <th>Edit</th>
         </tr>
       </thead>
       <tbody>
             {% for transaction in transactions %}
                 <tr>
                     <td data-label="S.No">{{ forloop.counter }}</td>
-                    <td data-label="Name">{{ transaction.enrollment }}</td>
-                    <td data-label="Name">{{ transaction.amount }}</td>
-                    <td data-label="Name">{{ transaction.reference }}</td>
-                    <td data-label="Name">{{ transaction.created_by.full_name }}</td>
+                    <td data-label="Name & Course">{{ transaction.enrollment }}</td>
+                    <td data-label="Amount">{{ transaction.amount }}</td>
+                    <td data-label="Reference">{{ transaction.reference }}</td>
+                    <td data-label="Added By">{{ transaction.created_by.full_name }}</td>
+                    <td data-label="Edit">
+                        <a class="btn btn-outline-primary" href="{%  url 'update_transactions' transaction.id %}">Edit</a>
+                    </td>
                 </tr>
 {#                <script>#}
 {#                    var fees_pending = document.getElementById("pending_amount-{{ enrollment_obj.id }}").innerHTML;#}

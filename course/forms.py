@@ -32,3 +32,17 @@ class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         fields = ('reference', 'amount')
+
+class UpdateTransactionForm(forms.ModelForm):
+
+    class Meta:
+        model = Transaction
+        fields = ('reference', 'amount')
+
+    def save(self, commit=False):
+        obj = self.instance
+        obj.reference = self.instance.reference
+        obj.amount = self.instance.amount
+        if commit:
+            obj.save()
+        return obj
