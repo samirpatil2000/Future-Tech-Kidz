@@ -1,8 +1,16 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from account.forms import RegistrationForm, AccountAuthenticationForm#, AccountUpdateForm
+from django.urls import reverse
+
+from account.forms import RegistrationForm, AccountAuthenticationForm, EditStudentForm  # , AccountUpdateForm
 
 # Create your views here.
+from account.models import Account, Student
+from course.models import Franchisee
+
+
 def index(request):
     return render(request,'account/home.html')
 
@@ -59,4 +67,35 @@ def login_view(request):
     # return render(request, "course/login.html", context)
     return render(request, "account/login.html", context)
 
+@login_required
+def branch_profile(request):
+    franchisee = get_object_or_404(Franchisee, owner=request.user.id)
+    context = {
+        "user": Account.objects.get(id=request.user.id),
+        "franchisee": franchisee
+    }
+    return render(request, 'account/branch_profile.html', context=context)
 
+#
+@login_required
+def update_student_profile(request):
+    student_object = get_object_or_404(Student, id=request.user.id)
+    form = EditStudentForm()
+    if request.method == "POST":
+        form = EditStudentForm(request.POST or None, instance=student_object)
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.save()
+            messages.success(request, "Profile Successfully Updated ..!")
+            return redirect('student_profile')
+
+    form = EditStudentForm(initial={
+        "email": student_object.email,
+        "first_name": student_object.first_name,
+        "last_name": student_object.last_name,
+        "school_name": student_object.school_name,
+    })
+    context = {
+        'form': form
+    }
+    return render(request, 'account/student_profile.html', context=context)

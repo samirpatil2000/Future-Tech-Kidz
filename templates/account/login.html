@@ -8,18 +8,18 @@
     <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="'border-bottom mb-4">Login Form </legend>
+            <legend class="border-bottom mb-4">Login  </legend>
            {{ login_form | crispy  }}
         </fieldset>
         <div class="form-group">
             <button class="btn btn-outline-info" type="submit">Login</button>
         </div>
     </form>
-    <div class="'border-top pt-3">
-        <small class="'text-muted">
-            New Here <a class="ml-2" href="{% url 'register' %}">Register</a>
-        </small>
-    </div>
+{#    <div class="'border-top pt-3">#}
+{#        <small class="'text-muted">#}
+{#            New Here <a class="ml-2" href="{% url 'register' %}">Register</a>#}
+{#        </small>#}
+{#    </div>#}
 </div>
 
 {% endblock body%}

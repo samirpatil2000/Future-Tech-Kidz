@@ -1,36 +1,64 @@
 
-<nav class="navbar navbar-expand-lg navbar-light bg-info" style="background-color: #e3f2fd;">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
 
 
-  <a class="navbar-brand" href="{% url 'home' %}">Future Tech Kidz</a>
+  <a class="navbar-brand" href="{% url 'home' %}">
+      <img src="https://img1.wsimg.com/isteam/ip/dccaa557-dfbe-4d22-93dc-2d99caf06871/futuretech_kidz_logo-removebg-preview-534c847.png/:/rs=w:105,h:100,cg:true,m/cr=w:105,h:100/qt=q:100/ll" width="40" height="40">
+  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'enrollments' %}">Enrolled Students</a>
-      </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Student
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="{% url 'students' %}">All Students</a>
-                <a class="dropdown-item" href="{% url 'add_student' %}">Add New Student</a>
-                <a class="dropdown-item" href="{% url 'transactions' %}">Transactions</a>
-
-            </div>
-        </li>
-
-
+{#      <li class="nav-item active">#}
+{#        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>#}
+{#      </li>#}
         {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            {% if request.user.is_franchisee_user %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Student
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'students' %}">All Students</a>
+                        <a class="dropdown-item" href="{% url 'enrollments' %}">Enrolled Students</a>
+                        <a class="dropdown-item" href="{% url 'transactions' %}">Transactions</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      User
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'branch_profile' %}">Profile</a>
+                        <a class="dropdown-item" href="{% url 'password_change' %}">Password Change</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">LogOut</a>
+                    </div>
+                </li>
+            {% elif request.user.is_admin %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'logout' %}">LogOut</a>
+                </li>
+            {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'enrolled_courses' %}">Enrolled Course</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      User
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'student_profile' %}">Profile</a>
+                        <a class="dropdown-item" href="{% url 'password_change' %}">Password Change</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">LogOut</a>
+                    </div>
+                </li>
+            {% endif %}
+
+
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
               </li>
         {% endif %}
     </ul>

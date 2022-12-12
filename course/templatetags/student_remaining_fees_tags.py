@@ -7,7 +7,7 @@ register = template.Library()
 
 
 def total_paid_amount(enrollment_id):
-    return Transaction.objects.filter(enrollment_id=enrollment_id).aggregate(Sum("amount")).get(
+    return Transaction.objects.filter(enrollment_id=enrollment_id).aggregate(Sum("amount")).get("amount__sum", 0) or 0
 
 
 @register.simple_tag

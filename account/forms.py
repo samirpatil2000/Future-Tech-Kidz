@@ -10,7 +10,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = Account
-        fields = ('email', 'username' ,'password1', 'password2', )
+        fields = ('email' , 'password1', 'password2', )
 
 
 
@@ -20,6 +20,22 @@ class CreateStudentForm(forms.ModelForm):
         model = Student
         fields = ('email', 'first_name', 'last_name', 'school_name')
 
+
+class EditStudentForm(forms.ModelForm):
+
+    class Meta:
+        model = Student
+        fields = ('email', 'first_name', 'last_name', 'school_name')
+
+    def save(self, commit=False):
+        object = self.instance
+        object.email = self.instance.email
+        object.first_name = self.instance.first_name
+        object.last_name = self.instance.last_name
+        object.school_name = self.instance.school_name
+        if commit:
+            object.save()
+        return object
 
 class AccountAuthenticationForm(forms.ModelForm):
 

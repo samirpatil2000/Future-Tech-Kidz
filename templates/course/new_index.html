@@ -6,13 +6,23 @@
 {% block body %}
 
     <div class="jumbotron">
-      <h1 class="display-4">Online Education</h1>
-      <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-      <hr class="my-4">
-      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-      <p class="lead">
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-      </p>
+      <h1 class="display-3">Futuretech kidz</h1>
+      <h1 class="display-6">Let's learn Coding!</h1>
+
+          <hr class="my-4">
+          <p class="h6" style="margin-bottom: 20px"> Let our passionate educators help you to reach your goals!</p>
+        <p class="lead">
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_admin %}
+                    <a class="btn btn-primary btn-lg" href="/admin" role="button">Admin</a>
+                {% endif %}
+                  <a class="btn btn-primary btn-lg" href="#" role="button">Courses</a>
+            {% else %}
+                <a class="btn btn-info btn-lg" href="{% url 'login' %}" role="button">Login</a>
+{#                <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>#}
+            {% endif %}
+        </p>
     </div>
 
 {% endblock %}
+

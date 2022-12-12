@@ -31,7 +31,8 @@
              <th>School Name</th>
              <th>Courses Enrolled</th>
 
-            <th>Enroll In Course</th>
+            <th>Enroll</th>
+            <th>Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -44,7 +45,8 @@
                   <td data-label="School Name">{{ student.school_name }}</td>
                   <td data-label="Courses Enrolled">{% total_enrollments_by_student student.id %}</td>
 
-                  <td data-label="Enroll In Course"><a class="btn btn-outline-info" href="{% url 'enroll_student' student.id %}">enroll</a></td>
+                  <td data-label="Enroll In Course"><a class="btn btn-outline-info" href="{% url 'enroll_student' student.id %}">Enroll</a></td>
+                  <td data-label="Edit"><a class="btn btn-outline-primary" href="{% url 'update_student' student.id %}">Edit</a></td>
               </tr>
         {% endfor %}
       </tbody>
