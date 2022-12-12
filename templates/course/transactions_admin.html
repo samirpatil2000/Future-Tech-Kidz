@@ -1,0 +1,51 @@
+{% extends 'account/new_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load student_remaining_fees_tags %}
+
+{% block body %}
+
+    {% if title %}
+        <h1>{{ title }}</h1>
+    {% else %}
+        <h3>All Transactions</h3>
+    {% endif %}
+
+    <table class="table table-hover" style="margin-top: 20px">
+      <thead>
+        <tr>
+             <th>Sr.No.</th>
+             <th>Name & Course</th>
+             <th>Amount</th>
+             <th>Reference</th>
+             <th>Added By</th>
+             <th>Date</th>
+             <th>Franchisee</th>
+             <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td data-label="S.No">{{ forloop.counter }}</td>
+                    <td data-label="Name & Course">{{ transaction.enrollment }}</td>
+                    <td data-label="Amount">{{ transaction.amount }}</td>
+                    <td data-label="Reference">{{ transaction.reference }}</td>
+                    <td data-label="Added By">{{ transaction.created_by.full_name }}</td>
+                    <td data-label="Date">{{ transaction.paid_at | date }}</td>
+                    <td data-label="Date">{{ transaction.enrollment.student.franchisee_name }}</td>
+                    <td data-label="Edit">
+                        <a class="btn btn-outline-primary" href="{%  url 'update_transactions' transaction.id %}">Edit</a>
+                    </td>
+                </tr>
+{#                <script>#}
+{#                    var fees_pending = document.getElementById("pending_amount-{{ enrollment_obj.id }}").innerHTML;#}
+{#                    if (fees_pending === '0'){#}
+{#                        document.getElementById("transaction-{{ enrollment_obj.id }}").innerHTML = "Already Paid";#}
+{#                    }#}
+{#                </script>#}
+            {% endfor %}
+      </tbody>
+    </table>
+
+{% endblock %}

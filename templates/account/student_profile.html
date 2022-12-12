@@ -1,0 +1,50 @@
+{% extends 'account/new_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load student_remaining_fees_tags %}
+
+
+
+{% block body %}
+
+    <div class="container">
+
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="'border-bottom mb-2">Student Profile</legend>
+            </fieldset>
+          <div class="row">
+            <div class="col">
+{#              <input type="text" class="form-control" placeholder="First name">#}
+{#                <label for="inputEmail4">First Name</label>#}
+{#                <h5 class="form-control">{{ user.first_name }}</h5>#}
+                {{ form.first_name | as_crispy_field }}
+            </div>
+            <div class="col">
+{#              <input type="text" class="form-control" placeholder="Last name">#}
+{#                <label for="inputEmail4">Last Name</label>#}
+{#                <h5 class="form-control">{{ user.last_name }}</h5>#}
+                {{ form.last_name | as_crispy_field }}
+            </div>
+          </div>
+            <div class="row">
+                    <div class="col">
+        {#              <input type="text" class="form-control" placeholder="First name">#}
+{#                        <label for="inputEmail4">Email</label>#}
+{#                        <h5 class="form-control">{{ user.email }}</h5>#}
+                        {{ form.email | as_crispy_field }}
+                    </div>
+                    <div class="col">
+        {#              <input type="text" class="form-control" placeholder="Last name">#}
+{#                        <label for="inputEmail4">School Name</label>#}
+{#                        <h5 class="form-control">{{ student.school_name }}</h5>#}
+                        {{ form.school_name | as_crispy_field }}
+                    </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-info" style="margin-top: 10px" type="submit" href="#">Submit</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
