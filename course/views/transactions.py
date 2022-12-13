@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
 
 from course.forms import  TransactionForm, UpdateTransactionForm
@@ -6,6 +7,7 @@ from course.models import Enrollment, Franchisee, Transaction
 
 from django.contrib.auth.decorators import login_required
 
+from course.handlers import paginator_object
 
 
 @login_required
@@ -17,8 +19,13 @@ def transactions(request):
         messages.warning(request, "User does not exists")
         return redirect('home')
 
+
+    transactions = Transaction.objects.filter(enrollment__student__franchisee_name_id=franchise[0].id)
+    page_obj = paginator_object(transactions, page=request.GET.get("page"))
+
     context = {
-        "transactions": Transaction.objects.filter(enrollment__student__franchisee_name_id=franchise[0].id)
+        "transactions": page_obj.object_list,
+        "page_obj": page_obj,
     }
     return render(request, 'course/transactions.html', context=context)
 
@@ -39,8 +46,15 @@ def transactions_admin(request):
         messages.warning(request, "Not Authorized")
         return redirect('home')
 
+    transactions = Transaction.objects.all().filter(**kwargs).order_by(("-" if order_by == -1 else "") + 'paid_at')
+    page_obj = paginator_object(transactions, page=request.GET.get("page"))
+
+
     context = {
-        "transactions": Transaction.objects.all().filter(**kwargs).order_by(("-" if order_by == -1 else "") + 'paid_at'),
+
+        "transactions": page_obj.object_list,
+        "page_obj": page_obj,
+
         "selected_franchisee": franchisee,
         "franchisees": Franchisee.objects.all(),
         "order_by": order_by * -1,

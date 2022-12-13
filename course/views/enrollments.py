@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
 from course.forms import EnrollStudentForm, UpdateEnrollStudentForm
+from course.handlers import paginator_object
 from course.models import Enrollment, Franchisee
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -19,8 +20,13 @@ def get_enrollments(request):
     if not franchise.exists() :
         messages.warning(request, "User does not exists")
         return redirect('home')
+
+    enrollments = Enrollment.objects.filter(student__franchisee_name_id=franchise[0].id, is_active=True)
+    page_obj = paginator_object(enrollments, page=request.GET.get("page"))
+
     context = {
-        'enrollments': Enrollment.objects.filter(student__franchisee_name_id=franchise[0].id, is_active=True)
+        'enrollments': page_obj.object_list,
+        'page_obj': page_obj
     }
     return render(request, template_name='course/enrollments.html', context=context)
 

@@ -9,6 +9,9 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 from account.models import Account, Student
 
+from course.handlers import paginator_object
+
+
 
 def home(request):
     return render(request, template_name='course/new_index.html')
@@ -50,28 +53,18 @@ def get_students(request):
     if not franchise.exists() :
         messages.warning(request, "User does not exists")
         return redirect('home')
+    students = Student.objects.filter(franchisee_name_id=franchise[0].id)
+    page_obj = paginator_object(students, page=request.GET.get("page"))
+
     context = {
-        'students': Student.objects.filter(franchisee_name_id=franchise[0].id)
+        'students': page_obj.object_list,
+        'page_obj': page_obj
     }
     return render(request, template_name='course/students.html', context=context)
 
 
 def create_username(email: str):
     return email.split("@")[0]
-
-
-@login_required
-def get_students(request):
-    if not request.user.is_franchisee_user and not request.user.is_admin:
-        return redirect('home')
-    franchise = Franchisee.objects.filter(owner_id=request.user.id)
-    if not franchise.exists() :
-        messages.warning(request, "User does not exists")
-        return redirect('home')
-    context = {
-        'students': Student.objects.filter(franchisee_name_id=franchise[0].id)
-    }
-    return render(request, template_name='course/students.html', context=context)
 
 
 def student_details(request, id:int):
