@@ -13,7 +13,7 @@ from account.models import Student
 
 @login_required
 def get_enrollments(request):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     franchise = Franchisee.objects.filter(owner_id=request.user.id)
     if not franchise.exists() :
@@ -27,7 +27,7 @@ def get_enrollments(request):
 
 @login_required
 def add_enrollment(request, student_id):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     student = Student.objects.filter(id=student_id)
     franchise = Franchisee.objects.filter(owner_id=request.user.id)
@@ -56,7 +56,7 @@ def add_enrollment(request, student_id):
 
 @login_required
 def update_enrollment(request, enrollment_id):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
 
     franchise = Franchisee.objects.filter(owner_id=request.user.id)
@@ -92,7 +92,7 @@ def update_enrollment(request, enrollment_id):
 
 @login_required
 def delete_enrollment(request, id):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     franchise = Franchisee.objects.filter(owner_id=request.user.id)
     if not franchise.exists():

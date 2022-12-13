@@ -44,7 +44,7 @@ def enrolled_courses(request):
 
 @login_required
 def get_students(request):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     franchise = Franchisee.objects.filter(owner_id=request.user.id)
     if not franchise.exists() :
@@ -62,7 +62,7 @@ def create_username(email: str):
 
 @login_required
 def get_students(request):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     franchise = Franchisee.objects.filter(owner_id=request.user.id)
     if not franchise.exists() :
@@ -80,7 +80,7 @@ def student_details(request, id:int):
 
 @login_required
 def add_student(request):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     franchisee = Franchisee.objects.filter(owner_id=request.user.id)
     if not franchisee.exists():
@@ -105,7 +105,7 @@ def add_student(request):
 
 @login_required
 def update_student(request, student_id):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     franchisee = Franchisee.objects.filter(owner_id=request.user.id)
     if not franchisee.exists():

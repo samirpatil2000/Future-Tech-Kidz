@@ -19,7 +19,7 @@ urlpatterns = [
     path('enrollments/delete/<int:id>', views.delete_enrollment, name='delete_enrollment'),
 
     path('transactions/', views.transactions, name='transactions'),
-    path('admin/transactions/', views.transactions_admin, name='transactions_admin'),
+    path('admin-transactions/', views.transactions_admin, name='transactions_admin'),
     path('transactions/<int:enrollment_id>', views.add_transactions, name='add_transaction'),
     path('transactions/update/<int:transaction_id>', views.update_transactions, name='update_transactions'),
     path('transactions/delete/<int:transaction_id>', views.delete_transactions, name='delete_transactions'),

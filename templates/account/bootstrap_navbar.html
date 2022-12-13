@@ -32,13 +32,19 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{% url 'branch_profile' %}">Profile</a>
                         <a class="dropdown-item" href="{% url 'password_change' %}">Password Change</a>
-                        <a class="dropdown-item" href="{% url 'logout' %}">LogOut</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                     </div>
                 </li>
             {% elif request.user.is_admin %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'logout' %}">LogOut</a>
+
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'transactions_admin' %}">Transactions</a>
+
+                </li>
+
             {% else %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'enrolled_courses' %}">Enrolled Course</a>

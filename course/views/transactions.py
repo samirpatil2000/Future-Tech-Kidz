@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def transactions(request):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     franchise = Franchisee.objects.filter(owner_id=request.user.id)
     if not franchise.exists():
@@ -25,21 +25,33 @@ def transactions(request):
 
 @login_required
 def transactions_admin(request):
-    if not request.user.is_superuser:
+    franchisee_id = request.GET.get("franchisee_id")
+    order_by = int(request.GET.get("order_by", 1))
+    kwargs = {}
+
+    franchisee = None
+
+    if franchisee_id and franchisee_id != "x":
+        franchisee = get_object_or_404(Franchisee, id=franchisee_id)
+        kwargs["enrollment__student__franchisee_name_id"] = franchisee_id
+
+    if not request.user.is_admin:
         messages.warning(request, "Not Authorized")
         return redirect('home')
 
     context = {
-        "transactions": Transaction.objects.all()
+        "transactions": Transaction.objects.all().filter(**kwargs).order_by(("-" if order_by == -1 else "") + 'paid_at'),
+        "selected_franchisee": franchisee,
+        "franchisees": Franchisee.objects.all(),
+        "order_by": order_by * -1,
     }
     return render(request, 'course/transactions_admin.html', context=context)
 
 
 
-
 @login_required
 def add_transactions(request, enrollment_id):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     franchise = Franchisee.objects.filter(owner_id=request.user.id)
     if not franchise.exists():
@@ -73,7 +85,7 @@ def add_transactions(request, enrollment_id):
 
 @login_required
 def update_transactions(request, transaction_id):
-    if not request.user.is_staff and not request.user.is_superuser:
+    if not request.user.is_franchisee_user and not request.user.is_admin:
         return redirect('home')
     franchise = Franchisee.objects.filter(owner_id=request.user.id)
     if not franchise.exists():

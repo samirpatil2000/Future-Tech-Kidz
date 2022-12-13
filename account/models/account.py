@@ -62,5 +62,8 @@ class Account(AbstractBaseUser):
 
     @property
     def full_name(self):
-        return (self.first_name or "") + " " + (self.last_name or "")
+        var = (self.first_name or "") + " " + (self.last_name or "")
+        if var.strip():
+            return var
+        return "No Name"
 
