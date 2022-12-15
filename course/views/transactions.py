@@ -29,8 +29,9 @@ def transactions(request):
 def transactions_admin(request):
     franchisee_id = request.GET.get("franchisee_id")
     order_by = int(request.GET.get("order_by", 1))
-    to_date = request.GET.get("to_date", str(datetime.today().date()))
-    from_date = request.GET.get("from_date", str(datetime.today().date()))
+    to_date = request.GET.get("to_date")
+    from_date = request.GET.get("from_date")
+
 
     kwargs = {}
     print("tt", to_date, from_date)
@@ -41,18 +42,24 @@ def transactions_admin(request):
         franchisee = get_object_or_404(Franchisee, id=franchisee_id)
         kwargs["enrollment__student__franchisee_name_id"] = franchisee_id
 
-    if to_date and from_date:
-        kwargs.update({
-            "paid_at__gte" : from_date,
-            "paid_at__lte" : to_date
-        })
+    if to_date or from_date:
+        if to_date and from_date:
+            kwargs.update({
+                "paid_at__gte" : from_date,
+                "paid_at__lte" : to_date
+            })
+        else:
+            messages.warning(request, "Please select to and from date")
+            return redirect("transactions_admin")
 
     if not request.user.is_admin:
         messages.warning(request, "Not Authorized")
         return redirect('home')
 
+    transactions = Transaction.objects.all().filter(**kwargs).order_by(("-" if order_by == -1 else "") + 'paid_at')
+    print(transactions, "Transactions", kwargs)
     context = {
-        "transactions": Transaction.objects.all().filter(**kwargs).order_by(("-" if order_by == -1 else "") + 'paid_at'),
+        "transactions": transactions,
         "selected_franchisee": franchisee,
         "franchisees": Franchisee.objects.all(),
         "order_by": order_by * -1,
