@@ -10,41 +10,41 @@
     {% else %}
         <h3>Enrollments</h3>
     {% endif %}
+    <div class="table-responsive">
+        <table class="table table-hover" style="margin-top: 20px">
+          <thead>
+            <tr>
+                 <th>Sr.No.</th>
+                 <th>Course</th>
+                 <th>Fees Paid</th>
+                 <th>Fees Pending</th>
+                 <th>Url</th>
+            </tr>
+          </thead>
+          <tbody>
+                {% for enrollment_obj in enrollments %}
+                    <tr>
+                        <td data-label="S.No">{{ forloop.counter }}</td>
+                        <td data-label="Course">{{ enrollment_obj.course }}</td>
+                        <td data-label="Fees Paid" id="paid_amount-{{ enrollment_obj.id }}">{% total_paid_amount_per_course enrollment_obj.id %}</td>
+                        <td data-label="Fees Pending" id="pending_amount-{{ enrollment_obj.id }}">{% remaining_amount_per_course enrollment_obj.id enrollment_obj.course_id %}</td>
+                        {% if enrollment_obj.url %}
+                            <td data-label="url">
+                                <a href="{{ enrollment_obj.url }}" target="_blank">Join</a></td>
+                        {% else %}
+                            <td data-label="url">No meet</td>
+                        {% endif %}
+                    </tr>
 
-    <table class="table table-hover" style="margin-top: 20px">
-      <thead>
-        <tr>
-             <th>Sr.No.</th>
-             <th>Course</th>
-             <th>Fees Paid</th>
-             <th>Fees Pending</th>
-             <th>Url</th>
-        </tr>
-      </thead>
-      <tbody>
-            {% for enrollment_obj in enrollments %}
-                <tr>
-                    <td data-label="S.No">{{ forloop.counter }}</td>
-                    <td data-label="Course">{{ enrollment_obj.course }}</td>
-                    <td data-label="Fees Paid" id="paid_amount-{{ enrollment_obj.id }}">{% total_paid_amount_per_course enrollment_obj.id %}</td>
-                    <td data-label="Fees Pending" id="pending_amount-{{ enrollment_obj.id }}">{% remaining_amount_per_course enrollment_obj.id enrollment_obj.course_id %}</td>
-                    {% if enrollment_obj.url %}
-                        <td data-label="url">
-                            <a href="{{ enrollment_obj.url }}" target="_blank">Join</a></td>
-                    {% else %}
-                        <td data-label="url">No meet</td>
-                    {% endif %}
-                </tr>
+                    <script>
+                        var fees_pending = document.getElementById("pending_amount-{{ enrollment_obj.id }}").innerHTML;
+                        if (fees_pending === '0'){
+                            document.getElementById("transaction-{{ enrollment_obj.id }}").innerHTML = "Already Paid";
+                        }
+                    </script>
+                {% endfor %}
 
-                <script>
-                    var fees_pending = document.getElementById("pending_amount-{{ enrollment_obj.id }}").innerHTML;
-                    if (fees_pending === '0'){
-                        document.getElementById("transaction-{{ enrollment_obj.id }}").innerHTML = "Already Paid";
-                    }
-                </script>
-            {% endfor %}
-
-      </tbody>
-    </table>
-
+          </tbody>
+        </table>
+    </div>
 {% endblock %}

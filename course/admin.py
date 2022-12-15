@@ -18,11 +18,14 @@ class CustomFranchise(admin.ModelAdmin):
 class CustomCourse(admin.ModelAdmin):
     list_display = ["title", "fees"]
 
+
 @admin.register(Transaction)
 class CustomTransaction(admin.ModelAdmin):
     list_display = [
-        "enrollment", "paid_at", "reference","amount",
+        "enrollment", "paid_at", "reference", "amount", "franchisee"
     ]
+    exclude = ("franchisee", )
+
 
 @admin.register(Enrollment)
 class CustomEnrollment(admin.ModelAdmin):

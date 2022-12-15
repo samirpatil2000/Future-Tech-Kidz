@@ -4,6 +4,17 @@ from django import forms
 from course.models import Enrollment, Transaction
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class LastActiveForm(forms.Form):
+    """
+    Last Active Date Form
+    """
+    from_date = forms.DateField(widget=DateInput, required=False)
+    to_date = forms.DateField(widget=DateInput, required=False)
+
 
 class EnrollStudentForm(forms.ModelForm):
 

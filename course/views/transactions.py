@@ -1,7 +1,9 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
-from course.forms import  TransactionForm, UpdateTransactionForm
+from course.forms import TransactionForm, UpdateTransactionForm, LastActiveForm
 from course.models import Enrollment, Franchisee, Transaction
 
 from django.contrib.auth.decorators import login_required
@@ -27,13 +29,23 @@ def transactions(request):
 def transactions_admin(request):
     franchisee_id = request.GET.get("franchisee_id")
     order_by = int(request.GET.get("order_by", 1))
+    to_date = request.GET.get("to_date", str(datetime.today().date()))
+    from_date = request.GET.get("from_date", str(datetime.today().date()))
+
     kwargs = {}
+    print("tt", to_date, from_date)
 
     franchisee = None
 
     if franchisee_id and franchisee_id != "x":
         franchisee = get_object_or_404(Franchisee, id=franchisee_id)
         kwargs["enrollment__student__franchisee_name_id"] = franchisee_id
+
+    if to_date and from_date:
+        kwargs.update({
+            "paid_at__gte" : from_date,
+            "paid_at__lte" : to_date
+        })
 
     if not request.user.is_admin:
         messages.warning(request, "Not Authorized")
@@ -44,6 +56,7 @@ def transactions_admin(request):
         "selected_franchisee": franchisee,
         "franchisees": Franchisee.objects.all(),
         "order_by": order_by * -1,
+        "form": LastActiveForm()
     }
     return render(request, 'course/transactions_admin.html', context=context)
 

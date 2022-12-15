@@ -16,21 +16,33 @@
     <form action="." method="get">
         <div class="input-group">
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="inputGroupSelect01">Options</label>
+                    <label class="input-group-text" for="inputGroupSelect01">Franchisee</label>
                 </div>
                 <select name="franchisee_id" class="custom-select" id="inputGroupSelect01">
                     <option selected value="x">Choose...</option>
                     {% for franchisee in franchisees %}
                             <option value="{{ franchisee.id }}">{{ franchisee.name }}</option>
                     {% endfor %}
-              </select>
-              <div class="input-group-append">
+                </select>
+        </div>
+        <div class="container row">
+{#            <label class="input-group-text" for="div_id_to_date">Franchisee</label>#}
+            <div style="margin-right: 10px">
+                {{ form.from_date | as_crispy_field   }}
+            </div>
+
+            <div style="margin-left: 10px">
+                {{ form.to_date | as_crispy_field   }}
+            </div>
+        </div>
+
+        <div class="input-group-append">
                 <button class="btn btn-outline-info" type="submit">Search</button>
-              </div>
         </div>
     </form>
 
-    <table class="table table-hover" style="margin-top: 20px">
+    <div class="table-responsive">
+        <table class="table table-hover" style="margin-top: 20px">
       <thead>
         <tr>
              <th>Sr.No.</th>
@@ -59,9 +71,7 @@
                     <td data-label="Added By">{{ transaction.created_by.full_name }}</td>
                     <td data-label="Date">{{ transaction.paid_at | date }}</td>
                     <td data-label="Franchisee">
-                            <a id="franchisee-{{ transaction.id }}" href="{% url "transactions_admin" %}?franchisee_id={{ transaction.enrollment.student.franchisee_name.id  }}">
-                                {{ transaction.enrollment.student.franchisee_name }}
-                            </a>
+                                {{ transaction.franchisee }}
                     </td>
 {#                    http://127.0.0.1:8000/admin-transactions/%20?%20franchisee_id=#}
 
@@ -69,15 +79,15 @@
                         <a class="btn btn-outline-primary" href="{%  url 'update_transactions' transaction.id %}">Edit</a>
                     </td>
                 </tr>
-                <script>
-                    var url = {% url "transactions_admin" %} + "?franchisee_id={{ transaction.enrollment.student.franchisee_name.id  }}"
-                    var fees_pending = document.getElementById("franchisee-{{ transaction.id }}").innerHTML;
-
-                        document.getElementById("franchisee-{{ transaction.id }}").href = url;
-                </script>
+{#                <script>#}
+{#                    var url = {% url "transactions_admin" %} + "?franchisee_id={{ transaction.enrollment.student.franchisee_name.id  }}"#}
+{#                    var fees_pending = document.getElementById("franchisee-{{ transaction.id }}").innerHTML;#}
+{##}
+{#                        document.getElementById("franchisee-{{ transaction.id }}").href = url;#}
+{#                </script>#}
 
             {% endfor %}
       </tbody>
     </table>
-
+    </div>
 {% endblock %}

@@ -8,4 +8,8 @@ class Transaction(models.Model):
     created_by = models.ForeignKey("account.Account", on_delete=models.SET_NULL, blank=True, null=True)
     reference = models.TextField()
     amount = models.IntegerField()
+    franchisee = models.ForeignKey("course.Franchisee", on_delete=models.SET_NULL, blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        self.franchisee = self.enrollment.franchisee
+        return super().save(*args, **kwargs)

@@ -17,3 +17,7 @@ class Enrollment(models.Model):
             raise "Can't create new enrollment for {} cause, it already exists".format(self.student.full_name)
 
         return super().save(*args, **kwargs)
+
+    @property
+    def franchisee(self):
+        return self.student.franchisee_name

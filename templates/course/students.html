@@ -20,36 +20,36 @@
 {#      </div>#}
 {#    </div>#}
     <a class="btn btn-outline-info" href="{% url 'add_student' %}"> Add New Student</a>
+    <div class="table-responsive">
+        <table class="table table-hover" style="margin-top: 20px">
+          <thead>
+            <tr>
+                 <th>Id</th>
+                 <th>Name</th>
 
-    <table class="table table-hover" style="margin-top: 20px">
-      <thead>
-        <tr>
-             <th>Id</th>
-             <th>Name</th>
+                 <th>Email</th>
+                 <th>School Name</th>
+                 <th>Courses Enrolled</th>
 
-             <th>Email</th>
-             <th>School Name</th>
-             <th>Courses Enrolled</th>
+                <th>Enroll</th>
+                <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students %}
+                  <tr>
+                      <td data-label="S.No">{{ forloop.counter }}</td>
+                      <td data-label="Name">{{ student.full_name }}</td>
 
-            <th>Enroll</th>
-            <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for student in students %}
-              <tr>
-                  <td data-label="S.No">{{ forloop.counter }}</td>
-                  <td data-label="Name">{{ student.full_name }}</td>
+                      <td data-label="Email">{{ student.email }}</td>
+                      <td data-label="School Name">{{ student.school_name }}</td>
+                      <td data-label="Courses Enrolled">{% total_enrollments_by_student student.id %}</td>
 
-                  <td data-label="Email">{{ student.email }}</td>
-                  <td data-label="School Name">{{ student.school_name }}</td>
-                  <td data-label="Courses Enrolled">{% total_enrollments_by_student student.id %}</td>
-
-                  <td data-label="Enroll In Course"><a class="btn btn-outline-info" href="{% url 'enroll_student' student.id %}">Enroll</a></td>
-                  <td data-label="Edit"><a class="btn btn-outline-primary" href="{% url 'update_student' student.id %}">Edit</a></td>
-              </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
+                      <td data-label="Enroll In Course"><a class="btn btn-outline-info" href="{% url 'enroll_student' student.id %}">Enroll</a></td>
+                      <td data-label="Edit"><a class="btn btn-outline-primary" href="{% url 'update_student' student.id %}">Edit</a></td>
+                  </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
 {% endblock %}
