@@ -5,7 +5,7 @@ from .models import Franchisee, Course, Transaction, Enrollment
 
 @admin.register(Franchisee)
 class CustomFranchise(admin.ModelAdmin):
-    list_display = ["name", "owner"]
+    list_display = ["name", "owner", "royalty_percentage"]
 
     # def show_average(self, obj):
     #     from django.db.models import Avg
@@ -22,7 +22,7 @@ class CustomCourse(admin.ModelAdmin):
 @admin.register(Transaction)
 class CustomTransaction(admin.ModelAdmin):
     list_display = [
-        "enrollment", "paid_at", "reference", "amount", "franchisee"
+        "enrollment", "paid_at", "reference", "amount", "franchisee", "royalty_fee"
     ]
     exclude = ("franchisee", )
 

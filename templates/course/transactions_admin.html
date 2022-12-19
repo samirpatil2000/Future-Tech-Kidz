@@ -58,6 +58,7 @@
                  {% endif %}
              </th>
              <th>Franchisee</th>
+             <th>Royalty Fee</th>
              <th>Edit</th>
         </tr>
       </thead>
@@ -74,7 +75,9 @@
                                 {{ transaction.franchisee }}
                     </td>
 {#                    http://127.0.0.1:8000/admin-transactions/%20?%20franchisee_id=#}
-
+                    <td data-label="Royalty Fee">
+                        {{ transaction.royalty_fee }}
+                    </td>
                     <td data-label="Edit">
                         <a class="btn btn-outline-primary" href="{%  url 'update_transactions' transaction.id %}">Edit</a>
                     </td>

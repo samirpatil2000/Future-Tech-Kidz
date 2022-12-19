@@ -13,3 +13,7 @@ class Transaction(models.Model):
     def save(self, *args, **kwargs):
         self.franchisee = self.enrollment.franchisee
         return super().save(*args, **kwargs)
+    @property
+    def royalty_fee(self):
+        print(self.franchisee.royalty_percentage, self.amount)
+        return (self.franchisee.royalty_percentage / 100) * self.amount

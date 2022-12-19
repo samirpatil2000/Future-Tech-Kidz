@@ -57,7 +57,6 @@ def transactions_admin(request):
         return redirect('home')
 
     transactions = Transaction.objects.all().filter(**kwargs).order_by(("-" if order_by == -1 else "") + 'paid_at')
-    print(transactions, "Transactions", kwargs)
     context = {
         "transactions": transactions,
         "selected_franchisee": franchisee,
